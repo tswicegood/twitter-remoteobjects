@@ -7,10 +7,10 @@ from httplib2 import Http
  
 from remoteobjects import RemoteObject, fields, ListObject
 
-class RemoteMapper(object):
+class EndPoint(object):
     def __init__(self, remote_object = None, http = None):
         self.is_plural = False
-        self.my_name = self.__class__.__name__[0:-6].lower()
+        self.my_name = self.__class__.__name__.lower()
         self.remote_object = remote_object
 
         if not self.remote_object:
@@ -72,7 +72,7 @@ class UserRemoteObject(RemoteObject):
     verified = fields.Field()
     status = fields.Object('Status')
 
-class UserMapper(RemoteMapper):
+class User(EndPoint):
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
         self.is_plural = True
@@ -89,7 +89,7 @@ class FollowersRemoteObject(RemoteObject):
     previous_cursor = fields.Field()
 
 
-class FollowersMapper(RemoteMapper):
+class Followers(EndPoint):
     def ids(self, id = None, screen_name = None, user_id = None, cursor = -1):
         if id:
             return self.do_get('/ids/%s.json?', id)
@@ -102,7 +102,7 @@ class FollowersMapper(RemoteMapper):
 class FriendshipsRemoteObject(RemoteObject):
     relationship = fields.Field()
 
-class FriendshipsMapper(RemoteMapper):
+class Friendships(EndPoint):
     def create(self, id = None, user_id = None, screen_name = None, follow = 'false'):
         if id:
             full_url = 'create/%s.json?' % id
@@ -134,11 +134,11 @@ class FriendshipsMapper(RemoteMapper):
 
 
 
-class TwitterMapper(Http):
+class Twitter(Http):
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
         self.api_url = 'https://twitter.com'
-        self.users = UserMapper(http = self)
-        self.followers = FollowersMapper(http = self)
-        self.friendships = FriendshipsMapper(http = self)
+        self.users = User(http = self)
+        self.followers = Followers(http = self)
+        self.friendships = Friendships(http = self)
 
