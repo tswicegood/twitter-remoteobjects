@@ -55,13 +55,16 @@ class Friendships(EndPoint):
         url += target_id and "&target_id=%s" % target_id or "&target_screen_name=%s" % target_screen_name
         return self.do_get(url)
 
+def add_twitter_properties(twitter):
+    twitter.users = User(http = twitter)
+    twitter.followers = Followers(http = twitter)
+    twitter.friendships = Friendships(http = twitter)
+
 class Twitter(Http):
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
         self.api_url = 'https://twitter.com'
-        self.users = User(http = self)
-        self.followers = Followers(http = self)
-        self.friendships = Friendships(http = self)
+        add_twitter_properties(self)
 
 class OAuthTwitter(OAuthHttp):
     request_token_url = 'https://twitter.com/oauth/request_token'
@@ -69,15 +72,13 @@ class OAuthTwitter(OAuthHttp):
     authorization_url = 'http://twitter.com/oauth/authorize'
     signin_url = 'http://twitter.com/oauth/authenticate'
 
-    # TODO: abstract this away, it duplicated Twitter.__init__
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
-        self.api_url = 'https://twitter.com'
-        self.users = User(http = self)
-        self.followers = Followers(http = self)
-        self.friendships = Friendships(http = self)
 
         # callback_url isn't necessary for Twitter
         self.callback_url = 'callback_url' in kwargs and kwargs['callback_url'] or ''
+        self.api_url = 'https://twitter.com'
+        add_twitter_properties(self)
+
 
 
