@@ -1,5 +1,7 @@
 from httplib2 import Http
 from twitter.base import EndPoint
+from twitter.oauthclient import OAuthHttp
+from twitter.remote_objects import *
 import sys
 
 class User(EndPoint):
@@ -60,4 +62,22 @@ class Twitter(Http):
         self.users = User(http = self)
         self.followers = Followers(http = self)
         self.friendships = Friendships(http = self)
+
+class OAuthTwitter(OAuthHttp):
+    request_token_url = 'https://twitter.com/oauth/request_token'
+    access_token_url = 'https://twitter.com/oauth/access_token'
+    authorization_url = 'http://twitter.com/oauth/authorize'
+    signin_url = 'http://twitter.com/oauth/authenticate'
+
+    # TODO: abstract this away, it duplicated Twitter.__init__
+    def __init__(self, *args, **kwargs):
+        super(self.__class__, self).__init__(*args, **kwargs)
+        self.api_url = 'https://twitter.com'
+        self.users = User(http = self)
+        self.followers = Followers(http = self)
+        self.friendships = Friendships(http = self)
+
+        # callback_url isn't necessary for Twitter
+        self.callback_url = 'callback_url' in kwargs and kwargs['callback_url'] or ''
+
 
