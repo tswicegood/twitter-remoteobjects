@@ -1,7 +1,4 @@
-import httplib
 import sys
-from urllib import urlencode, quote_plus
-from urlparse import urljoin, urlunsplit
  
 from httplib2 import Http
  
