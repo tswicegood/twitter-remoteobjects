@@ -1,7 +1,7 @@
 import os, sys
 sys.path[0:0] = os.path.join(os.path.dirname(__file__), '..')
-from twitter import *
-import twitter.remote_objects
+from twitterro import *
+import twitterro.remote_objects
 import unittest
 import mox
 import random
@@ -65,14 +65,14 @@ class TestOfEndPoint(unittest.TestCase):
     def test_loads_remote_object_of_same_name_if_remote_object_is_not_provided(self):
         class FooRemoteObject(object):
             pass
-        twitter.remote_objects.FooRemoteObject = FooRemoteObject
+        twitterro.remote_objects.FooRemoteObject = FooRemoteObject
         class Foo(EndPoint):
             pass
 
         rm = Foo()
         self.assert_(rm.remote_object, FooRemoteObject)
 
-        twitter.remote_objects.FooRemoteObject = None
+        twitterro.remote_objects.FooRemoteObject = None
 
     def test_http_is_equal_to_what_is_passed_in(self):
         random_value = random.randint(1, 100)

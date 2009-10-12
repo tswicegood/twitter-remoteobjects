@@ -1,7 +1,7 @@
 from httplib2 import Http
-from twitter.base import EndPoint
-from twitter.oauthclient import OAuthHttp
-from twitter.remote_objects import *
+from twitterro.base import EndPoint
+from twitterro.oauthclient import OAuthHttp
+from twitterro.remote_objects import *
 import sys
 
 class User(EndPoint):

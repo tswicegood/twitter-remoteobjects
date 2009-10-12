@@ -1,4 +1,4 @@
-import twitter.remote_objects
+import twitterro.remote_objects
 
 # TODO: This should live in its own package
 class EndPoint(object):
@@ -9,7 +9,7 @@ class EndPoint(object):
 
         if not self.remote_object:
             # TODO: abstract away the module name
-            exec("self.remote_object = twitter.remote_objects." + self.my_name.capitalize() + "RemoteObject")
+            exec("self.remote_object = twitterro.remote_objects." + self.my_name.capitalize() + "RemoteObject")
         self.http = http
 
     def get_full_url(self, url):
