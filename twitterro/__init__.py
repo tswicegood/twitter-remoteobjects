@@ -10,10 +10,12 @@ class User(EndPoint):
         self.is_plural = True
 
     def show(self, **kwargs):
-        return self.do_get('/%s.json?screen_name=%s' % (
-            sys._getframe().f_code.co_name,
-            kwargs['screen_name']
-        ))
+        # TODO: handle this gracefully if the values aren't provided
+        if "id" in kwargs:
+            extra = "id=%s" % kwargs['id']
+        else:
+            extra = "screen_name=%s" % kwargs['screen_name']
+        return self.do_get('show.json?%s' % extra)
 
 class Followers(EndPoint):
     def ids(self, id = None, screen_name = None, user_id = None, cursor = -1):
