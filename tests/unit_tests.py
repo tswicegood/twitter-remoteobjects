@@ -6,6 +6,16 @@ import unittest
 import mox
 import random
 import types
+from oauth import oauth
+
+class TestOfOAuthTwitter(unittest.TestCase):
+    def test_authorizations_are_added(self):
+        twitter = OAuthTwitter()
+        consumer = oauth.OAuthConsumer(key="foo", secret="bar")
+        token = oauth.OAuthConsumer(key="foo", secret="bar")
+        twitter.add_credentials(consumer, token)
+        self.assertEqual(len(twitter.authorizations), 1)
+
 
 class TestOfTwitter(unittest.TestCase):
     def test_has_friendships(self):

@@ -82,5 +82,10 @@ class OAuthTwitter(OAuthHttp):
         self.api_url = 'https://twitter.com'
         add_twitter_properties(self)
 
+    def add_credentials(self, name, password, domain=None):
+        if not domain:
+            domain = "twitter.com"
+        super(self.__class__, self).add_credentials(name, password, domain)
+
 
 
